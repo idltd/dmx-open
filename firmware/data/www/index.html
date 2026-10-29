@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>DMX-Open</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header id="topbar">
+        <div class="status">
+            <span id="conn-dot" class="dot offline"></span>
+            <span id="device-name">DMX-Open</span>
+        </div>
+        <div class="transport" id="transport">
+            <button id="btn-stop" class="t-btn" title="Stop">&#9632;</button>
+            <button id="btn-play" class="t-btn" title="Play">&#9654;</button>
+            <button id="btn-pause" class="t-btn" title="Pause">&#10074;&#10074;</button>
+            <span id="player-info" class="player-info"></span>
+        </div>
+        <button id="btn-blackout" class="blackout-btn">BO</button>
+    </header>
+
+    <nav id="tabs">
+        <a href="#live" class="tab active">Live</a>
+        <a href="#shows" class="tab">Shows</a>
+        <a href="#editor" class="tab">Editor</a>
+        <a href="#settings" class="tab">Settings</a>
+    </nav>
+
+    <main id="app"></main>
+
+    <script src="/app.js"></script>
+</body>
+</html>
