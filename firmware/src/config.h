@@ -3,14 +3,15 @@
 #define FW_VERSION "0.1.0"
 #define DEVICE_NAME "DMX-Open"
 
-// --- Hardware pins (ESP32 DevKit generic) ---
-#define DMX_TX_PIN   17
-#define DMX_RX_PIN   16
-#define DMX_DE_PIN    4
-#define DMX_UART_NUM  2
+// --- Hardware pins (ESP32-C3) ---
+// C3 has GPIO 0-21 only. GPIO 12/13 are USB-JTAG, avoid those.
+#define DMX_TX_PIN    7
+#define DMX_RX_PIN    6
+#define DMX_DE_PIN    5
+#define DMX_UART_NUM  1
 
-#define BTN_PIN       0   // BOOT button on most dev boards
-#define LED_PIN       2   // Built-in LED
+#define BTN_PIN       9   // BOOT button on most C3 dev boards
+#define LED_PIN       8   // Common LED pin on C3 DevKitM
 
 // --- DMX timing ---
 #define DMX_CHANNELS   512

@@ -65,7 +65,7 @@ void setup() {
         cfg.close();
     }
 
-    xTaskCreatePinnedToCore(dmxTask, "DMX", 4096, NULL, 1, NULL, 1);
+    xTaskCreate(dmxTask, "DMX", 4096, NULL, 1, NULL);
     Serial.println("Ready");
 }
 
