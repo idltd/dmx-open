@@ -4,31 +4,34 @@
 
 DMX-Open is a two-part system:
 
-1. **Firmware** (ESP32, C++) — handles WiFi, DMX output, show playback, and serves
+1. **Firmware** (ESP32-C3, C++) — handles WiFi, DMX output, show playback, and serves
    the web UI. Runs autonomously once a show is loaded.
-2. **PWA** (HTML/CSS/JS) — served from the ESP32's flash filesystem. Provides live
+2. **PWA** (HTML/CSS/JS) — served from the ESP32-C3's flash filesystem. Provides live
    control, show editing, and device configuration via any browser.
 
-The ESP32 is the only hardware. No Raspberry Pi, no laptop, no cloud. Connect to
+The ESP32-C3 is the only hardware. No Raspberry Pi, no laptop, no cloud. Connect to
 its WiFi, open the browser, control your lights.
 
 ## Firmware Architecture
 
 ```
-Core 0 (Arduino default)         Core 1 (dedicated task)
-┌─────────────────────┐          ┌──────────────────┐
-│  WiFi (AP + STA)    │          │  Show Player      │
-│  HTTP Server        │          │    ↓ tick()        │
-│  WebSocket Server   │  ◄────►  │  DMX Output       │
-│  REST API           │  shared  │    ↓ sendFrame()   │
-│  Button/LED         │  channel │  UART → RS-485     │
-│  main loop()        │  array   │  40 fps            │
-└─────────────────────┘          └──────────────────┘
+Single core (RISC-V)
+┌─────────────────────────────────────────┐
+│  WiFi (AP + STA)                        │
+│  HTTP Server / WebSocket / REST API     │
+│  Button/LED                             │
+│  main loop()                            │
+│                                         │
+│  Show Player  →  DMX Output             │
+│    tick()          sendFrame()           │
+│                    UART → RS-485        │
+│                    40 fps (FreeRTOS task)│
+└─────────────────────────────────────────┘
 ```
 
-Core 1 runs the DMX task at 40fps with `vTaskDelayUntil` for consistent timing.
-The channel array (512 bytes) is shared between cores — single-byte writes are
-atomic on ESP32, so no mutex is needed.
+The DMX task runs at 40fps with `vTaskDelayUntil` for consistent timing.
+The channel array (512 bytes) is shared between the main loop and the DMX
+task — single-byte writes are atomic, so no mutex is needed.
 
 ## Communication
 

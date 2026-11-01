@@ -1,6 +1,6 @@
 # DMX-Open
 
-Open-source DMX512 lighting controller. An ESP32 + isolated RS-485 transceiver in
+Open-source DMX512 lighting controller. An ESP32-C3 + isolated RS-485 transceiver in
 a small box — all control via a web browser on your phone, tablet, or laptop.
 
 **Two modes:**
@@ -13,7 +13,7 @@ a small box — all control via a web browser on your phone, tablet, or laptop.
 
 ~$10–18 in parts. See [hardware/BOM.md](hardware/BOM.md) for the full list and wiring.
 
-- ESP32 dev board (any)
+- ESP32-C3 dev board (DevKitM, SuperMini, XIAO, etc)
 - ADM2582E isolated RS-485 module
 - 5-pin XLR connector
 
@@ -27,8 +27,8 @@ a small box — all control via a web browser on your phone, tablet, or laptop.
 
 ## Architecture
 
-The ESP32 runs DMX output on a dedicated core at 40fps for rock-solid timing.
-The web server, WebSocket, and REST API run on the other core. The PWA is served
+The ESP32-C3 runs DMX output at 40fps with dedicated task timing.
+The web server, WebSocket, and REST API share the main loop. The PWA is served
 from the device's flash filesystem — no internet needed.
 
 See [docs/architecture.md](docs/architecture.md) for the full spec: API contract,
