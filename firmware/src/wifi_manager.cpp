@@ -6,8 +6,11 @@
 
 void WifiManager::init() {
     WiFi.mode(WIFI_AP_STA);
-    WiFi.softAP(AP_SSID, AP_PASS, AP_CHANNEL, 0, AP_MAX_CONN);
-    Serial.printf("AP started: %s @ %s\n", AP_SSID, WiFi.softAPIP().toString().c_str());
+    uint8_t mac[6];
+    WiFi.macAddress(mac);
+    snprintf(_apSSID, sizeof(_apSSID), "%s-%02X%02X", AP_SSID, mac[4], mac[5]);
+    WiFi.softAP(_apSSID, AP_PASS, AP_CHANNEL, 0, AP_MAX_CONN);
+    Serial.printf("AP started: %s @ %s\n", _apSSID, WiFi.softAPIP().toString().c_str());
     loadSaved();
 }
 
@@ -71,3 +74,4 @@ String WifiManager::getAPIP() const { return WiFi.softAPIP().toString(); }
 String WifiManager::getSTAIP() const { return WiFi.localIP().toString(); }
 bool WifiManager::isSTAConnected() const { return WiFi.status() == WL_CONNECTED; }
 String WifiManager::getSSID() const { return String(_ssid); }
+const char* WifiManager::getAPSSID() const { return _apSSID; }

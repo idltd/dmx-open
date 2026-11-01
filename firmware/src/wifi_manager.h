@@ -11,8 +11,10 @@ public:
     String getSTAIP() const;
     bool isSTAConnected() const;
     String getSSID() const;
+    const char* getAPSSID() const;
 
 private:
+    char _apSSID[32] = {0};
     char _ssid[64] = {0};
     char _pass[64] = {0};
     bool _staConnected = false;
